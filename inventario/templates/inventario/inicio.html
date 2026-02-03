@@ -1,0 +1,81 @@
+{% extends 'inventario/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="text-center mb-5">
+            <i class="fas fa-boxes fa-4x text-primary mb-3"></i>
+            <h1>Bienvenido al Sistema de Inventario</h1>
+            <p class="lead text-muted">Gestiona tu inventario de manera eficiente</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card h-100 text-center hover-card">
+                    <div class="card-body d-flex flex-column">
+                        <i class="fas fa-list fa-3x text-primary mb-3"></i>
+                        <h4>Ver Inventario</h4>
+                        <p class="text-muted flex-grow-1">Consulta todos los productos registrados en el sistema</p>
+                        <a href="{% url 'lista_productos' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-eye"></i> Ver Productos
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card h-100 text-center hover-card">
+                    <div class="card-body d-flex flex-column">
+                        <i class="fas fa-cogs fa-3x text-success mb-3"></i>
+                        <h4>Panel de Administración</h4>
+                        <p class="text-muted flex-grow-1">Accede al panel de control para gestionar usuarios y configuraciones</p>
+                        <a href="{% url 'panel_admin' %}" class="btn btn-success btn-lg">
+                            <i class="fas fa-tools"></i> Panel de Admin
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            {% if user.perfil.puede_crear %}
+            <div class="col-md-6">
+                <div class="card h-100 text-center hover-card">
+                    <div class="card-body d-flex flex-column">
+                        <i class="fas fa-plus-circle fa-3x text-warning mb-3"></i>
+                        <h4>Crear Producto</h4>
+                        <p class="text-muted flex-grow-1">Agrega nuevos productos al inventario</p>
+                        <a href="{% url 'crear_producto' %}" class="btn btn-warning btn-lg">
+                            <i class="fas fa-plus"></i> Nuevo Producto
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+            {% if user.perfil.puede_ver_reportes %}
+            <div class="col-md-6">
+                <div class="card h-100 text-center hover-card">
+                    <div class="card-body d-flex flex-column">
+                        <i class="fas fa-chart-bar fa-3x text-info mb-3"></i>
+                        <h4>Reportes</h4>
+                        <p class="text-muted flex-grow-1">Consulta estadísticas y reportes del inventario</p>
+                        <a href="{% url 'reportes' %}" class="btn btn-info btn-lg">
+                            <i class="fas fa-chart-line"></i> Ver Reportes
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+.hover-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+</style>
+{% endblock %}

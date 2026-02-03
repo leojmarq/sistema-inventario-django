@@ -1,0 +1,197 @@
+{% extends 'inventario/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <div class="d-flex align-items-center">
+                    <div class="avatar-circle me-3">
+                        <i class="fas fa-user-plus fa-lg"></i>
+                    </div>
+                    <div>
+                        <h4 class="mb-0"><i class="fas fa-id-badge"></i> Crear Perfil</h4>
+                        <small>Para el usuario: {{ usuario.username }}</small>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Información del usuario -->
+                <div class="alert alert-info mb-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-2 text-center">
+                            <div class="user-avatar">
+                                <i class="fas fa-user fa-2x"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-10">
+                            <h6 class="mb-1">Información del Usuario</h6>
+                            <p class="mb-1"><strong>Usuario:</strong> {{ usuario.username }}</p>
+                            {% if usuario.first_name or usuario.last_name %}
+                                <p class="mb-1"><strong>Nombre:</strong> {{ usuario.first_name }} {{ usuario.last_name }}</p>
+                            {% endif %}
+                            {% if usuario.email %}
+                                <p class="mb-0"><strong>Email:</strong> {{ usuario.email }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {% if perfil_form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ perfil_form.non_field_errors }}
+                        </div>
+                    {% endif %}
+                    
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-id-badge text-success"></i> Información del Perfil
+                            </h5>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label"><i class="fas fa-user-tag"></i> Rol *</label>
+                                {{ perfil_form.rol }}
+                                {% if perfil_form.rol.errors %}
+                                    <div class="text-danger small">{{ perfil_form.rol.errors.0 }}</div>
+                                {% endif %}
+                                <div class="form-text">
+                                    <small>
+                                        <strong>Admin:</strong> Acceso completo |
+                                        <strong>Gerente:</strong> Crear, editar, eliminar |
+                                        <strong>Empleado:</strong> Crear, editar |
+                                        <strong>Consulta:</strong> Solo ver
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label"><i class="fas fa-building"></i> Departamento</label>
+                                {{ perfil_form.departamento }}
+                                {% if perfil_form.departamento.errors %}
+                                    <div class="text-danger small">{{ perfil_form.departamento.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label"><i class="fas fa-phone"></i> Teléfono</label>
+                                {{ perfil_form.telefono }}
+                                {% if perfil_form.telefono.errors %}
+                                    <div class="text-danger small">{{ perfil_form.telefono.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Permisos que tendrá -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-key text-warning"></i> Permisos del Rol
+                            </h5>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <div class="permission-card">
+                                <i class="fas fa-eye text-primary"></i>
+                                <h6>Ver Productos</h6>
+                                <span class="badge bg-success">Todos los roles</span>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <div class="permission-card">
+                                <i class="fas fa-plus text-success"></i>
+                                <h6>Crear Productos</h6>
+                                <span class="badge bg-info">Admin, Gerente, Empleado</span>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <div class="permission-card">
+                                <i class="fas fa-edit text-warning"></i>
+                                <h6>Editar Productos</h6>
+                                <span class="badge bg-info">Admin, Gerente, Empleado</span>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <div class="permission-card">
+                                <i class="fas fa-trash text-danger"></i>
+                                <h6>Eliminar Productos</h6>
+                                <span class="badge bg-warning">Admin, Gerente</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{% url 'lista_usuarios' %}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save"></i> Crear Perfil
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.avatar-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.user-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #17a2b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin: 0 auto;
+}
+
+.permission-card {
+    text-align: center;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #e9ecef;
+}
+
+.permission-card i {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.permission-card h6 {
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.permission-card .badge {
+    font-size: 0.7rem;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'inventario/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4><i class="fas fa-box"></i> {{ producto.nombre }}</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Código:</strong> <code>{{ producto.codigo }}</code></p>
+                        <p><strong>Categoría:</strong> <span class="badge bg-secondary">{{ producto.categoria }}</span></p>
+                        <p><strong>Precio:</strong> <span class="text-success fw-bold">${{ producto.precio }}</span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Stock:</strong> 
+                            <span class="badge {% if producto.necesita_restock %}bg-danger{% else %}bg-success{% endif %}">
+                                {{ producto.stock }} unidades
+                            </span>
+                        </p>
+                        <p><strong>Stock Mínimo:</strong> {{ producto.stock_minimo }} unidades</p>
+                        <p><strong>Estado:</strong> 
+                            {% if producto.necesita_restock %}
+                                <span class="badge bg-danger"><i class="fas fa-exclamation-triangle"></i> Stock Bajo</span>
+                            {% else %}
+                                <span class="badge bg-success"><i class="fas fa-check"></i> OK</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+                
+                {% if producto.descripcion %}
+                <div class="mt-3">
+                    <strong>Descripción:</strong>
+                    <p class="text-muted">{{ producto.descripcion }}</p>
+                </div>
+                {% endif %}
+                
+                <div class="mt-4">
+                    <div class="btn-group" role="group">
+                        {% if perfil.puede_editar %}
+                            <a href="{% url 'editar_producto' producto.pk %}" class="btn btn-warning">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                            <a href="{% url 'registrar_movimiento' producto.pk %}" class="btn btn-info">
+                                <i class="fas fa-exchange-alt"></i> Movimiento
+                            </a>
+                        {% endif %}
+                        {% if perfil.puede_eliminar %}
+                            <a href="{% url 'eliminar_producto' producto.pk %}" class="btn btn-danger">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-history"></i> Últimos Movimientos</h5>
+            </div>
+            <div class="card-body">
+                {% if movimientos %}
+                    {% for movimiento in movimientos %}
+                    <div class="d-flex justify-content-between align-items-center mb-2 p-2 border-bottom">
+                        <div>
+                            <span class="badge {% if movimiento.tipo == 'entrada' %}bg-success{% else %}bg-warning{% endif %}">
+                                {{ movimiento.get_tipo_display }}
+                            </span>
+                            <small class="d-block text-muted">{{ movimiento.motivo }}</small>
+                        </div>
+                        <div class="text-end">
+                            <strong>{{ movimiento.cantidad }}</strong>
+                            <small class="d-block text-muted">{{ movimiento.fecha|date:"d/m H:i" }}</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted text-center">No hay movimientos registrados</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

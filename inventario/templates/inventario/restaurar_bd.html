@@ -1,0 +1,42 @@
+{% extends 'inventario/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h4 class="mb-0">
+                    <i class="fas fa-exclamation-triangle"></i> Restaurar Base de Datos
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>¡Atención!</strong> Esta acción reemplazará completamente la base de datos actual.
+                    Se creará un respaldo de seguridad automáticamente.
+                </div>
+                
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <i class="fas fa-file-upload"></i> Seleccionar archivo de respaldo
+                        </label>
+                        <input type="file" name="backup_file" class="form-control" accept=".sqlite3" required>
+                        <div class="form-text">Solo archivos .sqlite3</div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'panel_admin' %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-warning" onclick="return confirm('¿Estás seguro de restaurar la base de datos? Esta acción no se puede deshacer.')">
+                            <i class="fas fa-upload"></i> Restaurar Base de Datos
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
