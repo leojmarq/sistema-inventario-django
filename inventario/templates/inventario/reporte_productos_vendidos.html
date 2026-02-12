@@ -1,0 +1,112 @@
+{% extends 'inventario/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h4 class="mb-0"><i class="fas fa-trophy"></i> Top 10 Productos Más Vendidos</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-warning">
+                            <tr>
+                                <th>#</th>
+                                <th>Producto</th>
+                                <th>Cantidad Vendida</th>
+                                <th>Veces Vendido</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in productos_vendidos %}
+                            <tr>
+                                <td>
+                                    {% if forloop.counter == 1 %}
+                                        <i class="fas fa-trophy text-warning fa-lg"></i>
+                                    {% elif forloop.counter == 2 %}
+                                        <i class="fas fa-medal text-secondary fa-lg"></i>
+                                    {% elif forloop.counter == 3 %}
+                                        <i class="fas fa-medal text-danger fa-lg"></i>
+                                    {% else %}
+                                        {{ forloop.counter }}
+                                    {% endif %}
+                                </td>
+                                <td><strong>{{ item.producto__nombre }}</strong></td>
+                                <td>
+                                    <span class="badge bg-success">{{ item.total_vendido }} unidades</span>
+                                </td>
+                                <td>{{ item.veces_vendido }} ventas</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center py-5">
+                                    <i class="fas fa-chart-line fa-3x text-muted mb-3"></i>
+                                    <h5>No hay datos de ventas</h5>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-4">
+                    <a href="{% url 'reportes' %}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver a Reportes
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Gráfico visual -->
+{% if productos_vendidos %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-chart-bar"></i> Visualización</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="chartVentas" height="80"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('chartVentas');
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: [
+            {% for item in productos_vendidos %}
+                '{{ item.producto__nombre }}',
+            {% endfor %}
+        ],
+        datasets: [{
+            label: 'Cantidad Vendida',
+            data: [
+                {% for item in productos_vendidos %}
+                    {{ item.total_vendido }},
+                {% endfor %}
+            ],
+            backgroundColor: 'rgba(255, 193, 7, 0.5)',
+            borderColor: 'rgba(255, 193, 7, 1)',
+            borderWidth: 2
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+{% endif %}
+{% endblock %}

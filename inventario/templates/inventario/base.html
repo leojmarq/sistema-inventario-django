@@ -32,9 +32,15 @@
                     <a href="{% url 'inicio' %}" class="btn btn-primary me-2">Inicio</a>
                     <a href="{% url 'lista_productos' %}" class="btn btn-primary me-2">Productos</a>
                     <a href="{% url 'lista_categorias' %}" class="btn btn-primary me-2">Categorías</a>
-                    <a href="{% url 'logout' %}" class="btn btn-outline-light">
-                        <i class="fas fa-sign-out-alt"></i> Salir
-                    </a>
+                    <a href="{% url 'lista_proveedores' %}" class="btn btn-primary me-2">Proveedores</a>
+                    <a href="{% url 'lista_clientes' %}" class="btn btn-primary me-2">Clientes</a>
+                    <a href="{% url 'lista_ventas' %}" class="btn btn-primary me-2">Ventas</a>
+                    <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-light">
+                            <i class="fas fa-sign-out-alt"></i> Salir
+                        </button>
+                    </form>
                 {% endif %}
             </div>
         </div>
@@ -43,8 +49,13 @@
     <div class="container mt-4">
         {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <i class="fas fa-check-circle"></i> {{ message }}
+                <div class="alert {% if 'warning' in message.tags %}alert-warning{% else %}alert-success{% endif %} alert-dismissible fade show" role="alert">
+                    {% if 'warning' in message.tags %}
+                        <i class="fas fa-exclamation-triangle"></i>
+                    {% else %}
+                        <i class="fas fa-check-circle"></i>
+                    {% endif %}
+                    {{ message }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             {% endfor %}

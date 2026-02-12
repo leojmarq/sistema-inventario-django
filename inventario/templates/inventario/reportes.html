@@ -10,7 +10,7 @@
             <div class="card-body">
                 <div class="row">
                     <!-- Reporte de Inventario -->
-                    <div class="col-md-6 mb-4">
+                    <div class="col-md-4 mb-4">
                         <div class="card h-100">
                             <div class="card-body text-center">
                                 <i class="fas fa-file-pdf fa-3x text-danger mb-3"></i>
@@ -40,8 +40,47 @@
                         </div>
                     </div>
 
+                    <!-- Reporte de Ventas -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-shopping-cart fa-3x text-success mb-3"></i>
+                                <h5>Reporte de Ventas</h5>
+                                <p class="text-muted">Genera reporte de ventas por período</p>
+                                
+                                <form method="get" action="{% url 'reporte_ventas_pdf' %}" class="mb-3">
+                                    <div class="mb-2">
+                                        <label class="form-label small">Desde</label>
+                                        <input type="date" name="fecha_desde" class="form-control form-control-sm">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label small">Hasta</label>
+                                        <input type="date" name="fecha_hasta" class="form-control form-control-sm">
+                                    </div>
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fas fa-download"></i> Generar PDF
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Productos Más Vendidos -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-chart-line fa-3x text-warning mb-3"></i>
+                                <h5>Productos Más Vendidos</h5>
+                                <p class="text-muted">Top 10 productos más vendidos</p>
+                                <a href="{% url 'reporte_productos_vendidos' %}" class="btn btn-warning">
+                                    <i class="fas fa-eye"></i> Ver Reporte
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Logs del Sistema -->
-                    <div class="col-md-6 mb-4">
+                    <div class="col-md-4 mb-4">
                         <div class="card h-100">
                             <div class="card-body text-center">
                                 <i class="fas fa-history fa-3x text-info mb-3"></i>

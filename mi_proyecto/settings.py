@@ -120,4 +120,4 @@ STATIC_URL = 'static/'
 # Login/Logout URLs
 LOGIN_URL = '/inventario/login/'
 LOGIN_REDIRECT_URL = '/inventario/'
-LOGOUT_REDIRECT_URL = '/inventario/'
+LOGOUT_REDIRECT_URL = '/inventario/login/'

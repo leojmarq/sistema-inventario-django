@@ -1,0 +1,30 @@
+{% extends 'inventario/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0"><i class="fas fa-shopping-cart"></i> Nueva Venta</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Cliente *</label>
+                        {{ form.cliente }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Observaciones</label>
+                        {{ form.observaciones }}
+                    </div>
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{% url 'lista_ventas' %}" class="btn btn-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-success">Continuar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
